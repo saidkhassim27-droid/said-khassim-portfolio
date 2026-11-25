@@ -1,21 +1,22 @@
 
 <?php
 require_once "config.php";
-$settingsStmt = $conn->query("SELECT * FROM site_settings ORDER BY id DESC LIMIT 1");
-$siteSettings = $settingsStmt->fetch(PDO::FETCH_ASSOC);
+$settingsStmt = $conn->query(
+    "SELECT setting_name, setting_value FROM site_settings"
+);
 
-if (!$siteSettings) {
-    $siteSettings = [
-        "site_title" => "SAID KHASSIM",
-        "site_description" => "ICT Professional & Digital Services",
-        "contact_email" => "",
-        "contact_phone" => "",
-        "site_location" => "",
-        "whatsapp" => "",
-        "linkedin" => "",
-        "github" => ""
-    ];
-}
+$siteSettings = $settingsStmt->fetchAll(PDO::FETCH_KEY_PAIR);
+
+$siteSettings = array_merge([
+    "site_title" => "SAID KHASSIM",
+    "site_description" => "ICT Professional & Digital Services",
+    "contact_email" => "",
+    "contact_phone" => "",
+    "site_location" => "",
+    "whatsapp" => "",
+    "linkedin" => "",
+    "github" => ""
+], $siteSettings);
 
 $stmt = $conn->query("SELECT * FROM profile ORDER BY id DESC LIMIT 1");
 $profile = $stmt->fetch(PDO::FETCH_ASSOC);
